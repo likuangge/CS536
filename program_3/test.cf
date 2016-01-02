@@ -1,0 +1,37 @@
+int x;
+int y;
+int x2; int y2; int z;
+bool q;
+void e;
+bool q2; void e2;
+struct node head;
+struct node{int first; bool second; struct node head;};
+int function(){}
+int function(){return;}
+int foo(int one){}
+int boo(int one, bool two){}
+int boo(int one, bool two, void three){}
+int foo(int one){return;}
+int boo(int one, bool two){return;}
+int boo(int one, bool two, void three){return;}
+void test(){
+x = z;
+this = that;
+node.head = a;
+node.head = a+b + c;
+h++;
+h.c--;
+w = a*c+d;
+p=a*b*c/h-2+10*3;
+}
+void foo(int x, int y, bool now){if(b==-1){while(c){y=y*2+x;}}else{x=0;}}
+void testAgain(){
+if(a==b){int x;}
+if(a>b){bool z;}
+if(a<b){five = 5;}
+if(a>=b){a = 8*9/2*2;}
+if(a<=b){u++;}
+}
+void thisCrap(int x, bool go){
+if(a<0){if(x==y){x=2+2;}else{if(z>y){y=z*y;}if(!var){var=false;x++;call();greeting="Why hello there?!";}else{var = true;}}}
+}

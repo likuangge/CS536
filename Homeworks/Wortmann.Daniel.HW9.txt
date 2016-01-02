@@ -1,0 +1,91 @@
+Dan Wortmann
+CS 536 - Fall 2015
+HW 9
+--------------------------------------------------------------------------------
+Q1.
+I assume you don't want us to just run QtSpim on this...so I'm doing this
+without using the tool...
+
+        // push return addr
+    sw      $ra,    0($sp)
+    subu    $sp,    $sp,    4
+        // control link
+    sw      $fp,    0($sp)
+    subu    $sp,    $sp,    4
+        // set FP to bottom of AR (each param is 4 bytes, + 4 for ret,link)
+    addu    $fp,    $sp,    16
+        // No needed space for locals since we just return the params?
+
+        // place return value in v0 - NOT FLOAT
+    lw      $t0,    0($fp)
+    lw      $t1,    -4($fp)
+    addu    $v0,    $t0,    $t1 // return a + b
+
+        // load ret addr and save control link
+    lw      $ra,    -8($fp)
+    move    $t0,    $fp
+        // restore FP, SP
+    lw      $fp,    -12($fp)
+    move    $sp,    $t0
+        // return
+    jr      $ra
+--------------------------------------------------------------------------------
+Q2.
+For the sake of time and clarity, I am no going to push everything on the stack;
+instead I will use all of the temporary registers I can.
+
+// ASSUME 'c' is already in $t2 at this point //
+L1:     li      $t0     0
+L2:     li      $t1     1
+L3:     li      $t3,    10
+
+L4:     bgt     $t0,    $t2,    L6  // if(a > c) go to for loop
+L5:     bgt     $t1,    $t2,    L6  // if(b > c) go to for loop
+
+L6:     blt     $t2,    $t3,    L9 // check (c < 10)
+L7:     addu    $t2,    $t2,    1
+L8:     j       L6
+L9:     // after for loop here...
+
+L1-L3 do not really matter here, they just hold our variable values and
+unconditionally go to L4. However, L4 can either fallthrough to L5, or jump
+on false to L6-L8 block. Similarily, L5 can fall through into itself before
+going onto the L6-L8 block or, just jump on false immediately.
+
+Finally the L6-L8 block loops on itself until the condition is false, in which
+case the block jump to L9 and continues execution beyond the scope of what is
+shown.
+
+     L1-L3
+       |
+       V
+      L4----+
+       |    |
+       V    |
+      L5--->|
+       |    |
+       V    |
+  X  L6-L8 <+
+       |
+       V
+      L9
+--------------------------------------------------------------------------------
+Q3.
+li $t0 1            // t0 = 1
+li $t1 2            // t1 = 2
+addu $t0 $t1 $t0    // t0 = 3
+sw $t0 ($sp)        // (sp+0) = 3
+sw $t1 4($sp)       // (sp+4) = 2
+li $t2 8            // t2 = 8
+subu $sp $sp $t2    // sp = sp - 8
+lw $t3 4($sp)       // t3 = undef
+lw $t0 8($sp)       // t0 = 3
+li $ra 0x0          // ra = 0
+jr $ra              //
+
+$t0 = 3
+$t1 = 2
+$t2 = 8
+$t3 = undef -> 4($sp) points to an undefined region, only 8/12 offesets held 3/2
+$ra = 0x0
+PC  = 0x0

@@ -1,0 +1,85 @@
+Dan Wortmann
+CS 536 - Fall 2015
+HW 5
+
+Do ONE of the following:
+a)  Give one string that is a legal regular expression (given our definition
+    above), but is not in the language of the CFG.
+b)  Give one string that is not a legal regular expression (given our definition
+    above), but is in the language of the CFG.
+c)  Show that the CFG is ambiguous by drawing two different parse trees for some
+    string in the language of the CFG.
+--------------------------------------------------------------------------------
+CFG 1:
+expr → expr OR term | term
+term → term item | item
+factor → item STAR | item PLUS | item
+item → LTR | EPS | LPAR expr RPAR
+--------------------------------------------------------------------------------
+a) Impossible to have multiple +/* operators since the 'factor' is unreachable.
+
+    a+|b* , would not be possible
+--------------------------------------------------------------------------------
+CFG 2:
+expr → expr OR term | term
+term → term item | item
+item → expr STAR | expr PLUS | LTR | EPS | LPAR expr RPAR
+--------------------------------------------------------------------------------
+b) We could have an illegal statement by looping on the term->item->expr STAR so
+   some regex like this is allowed in this CFG.
+   
+    a+*+*+*++++****
+--------------------------------------------------------------------------------
+CFG 3:
+expr → LPAR expr RPAR | term
+term → term OR factor | factor
+factor → factor item | item
+item → item STAR | item PLUS | LTR | EPS
+--------------------------------------------------------------------------------
+a) We can only have a single set of () since there is no way to return to 'expr'
+   after leaving it... regexs such as:
+   
+    (a|(cbd+))* , would not be possible
+--------------------------------------------------------------------------------
+CFG 4:
+expr → expr OR term | term
+term → term item | ε
+item → item STAR | item PLUS | LTR | EPS | LPAR expr RPAR
+--------------------------------------------------------------------------------
+a) We can have illegal and goofy looking statements since term can be empty...
+
+    (a|)
+--------------------------------------------------------------------------------
+CFG 5:
+expr → expr OR term | term
+term → term item | LPAR expr RPAR | item
+item → item STAR | item PLUS | LTR | EPS
+--------------------------------------------------------------------------------
+a) Since only 'item' can have the +/* operators around it, we can never have the
+   STAR or PLUS around an expression enclosed within ().
+   
+    (a|b)* ,would not be accepted.
+--------------------------------------------------------------------------------
+CFG 6:
+expr → LTR | EPS | term
+term → term OR factor | factor
+factor → factor item | item
+item → item STAR | item PLUS | LPAR item RPAR | expr
+--------------------------------------------------------------------------------
+c)
+There is an ambiguity in the CFG wherein we can loop from term -> factor -> item
+-> expr -> term with the same final result. This allows for a large number of
+CFG's to be created in any case that involves those terms...so almost any case.
+
+a|b|c can be made with:
+
+    expr -> term -> (term OR factor) ->
+
+    ((term OR factor) OR factor) and so on
+
+OR with:
+
+    expr -> (term OR factor) ->
+
+    ((term -> factor) OR (factor -> item -> expr -> term -> (term OR factor))
+                                                                       and so on

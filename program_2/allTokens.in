@@ -1,0 +1,61 @@
+A	//line #: 1	char#: 1
+Z	//line #: 2	char#: 1
+{	//line #: 3	char#: 1
+}	//line #: 4	char#: 1
+(	//line #: 5	char#: 1
+)	//line #: 6	char#: 1
+;	//line #: 7	char#: 1
+,	//line #: 8	char#: 1
+.	//line #: 9	char#: 1
+<<	//line #: 10	char#: 1
+>>	//line #: 11	char#: 1
+++	//line #: 12	char#: 1
+==	//line #: 13	char#: 1
++	//line #: 14	char#: 1
+-	//line #: 15	char#: 1
+*	//line #: 16	char#: 1
+/	//line #: 17	char#: 1
+!	//line #: 18	char#: 1
+&&	//line #: 19	char#: 1
+||	//line #: 20	char#: 1
+!=	//line #: 21	char#: 1
+<	//line #: 22	char#: 1
+>	//line #: 23	char#: 1
+<=	//line #: 24	char#: 1
+>=	//line #: 25	char#: 1
+=	//line #: 26	char#: 1
+bool	//line #: 27	char#: 1
+int	//line #: 28	char#: 1
+void	//line #: 29	char#: 1
+true	//line #: 30	char#: 1
+false	//line #: 31	char#: 1
+cin	//line #: 32	char#: 1
+cout	//line #: 33	char#: 1
+if	//line #: 34	char#: 1
+else	//line #: 35	char#: 1
+while	//line #: 36	char#: 1
+return	//line #: 37	char#: 1
+""	//line #: 38	char#: 1
+"Normal String 88"	//line #: 39	char#: 1
+"use \n to denote a newline character"	//line #: 40	char#: 1
+"include a quote like this \" and a backslash like this \\ \' like that"	//line #: 41	char#: 1
+"will this // treat it like a # comment now"	//line #: 42	char#: 1
+0	//line #: 43	char#: 1
+1	//line #: 44	char#: 1
+10	//line #: 45	char#: 1
+40	//line #: 46	char#: 1
+239	//line #: 47	char#: 1
+5067	//line #: 48	char#: 1
+id0	//line #: 49	char#: 1
+id1	//line #: 50	char#: 1
+id2	//line #: 51	char#: 1
+"test string0"	//line #: 52	char#: 1
+"test string1"	//line #: 53	char#: 1
+id3	//line #: 54	char#: 1
+"String with many symbols !@#$%^&*()<>-+=_,.:;{}[]|"	//line #: 55	char#: 1
+2147483647	//line #: 56	char#: 1
+-2147483648	//line #: 57	char#: 1
+"Good Ending \' String"	//line #: 58	char#: 1
+""	//line #: 59	char#: 1
+"Simple Test is done with..."	//line #: 60	char#: 1
+"include backslash \\"	//line #: 61	char#: 1

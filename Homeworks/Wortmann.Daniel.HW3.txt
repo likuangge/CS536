@@ -1,0 +1,23 @@
+Dan Wortmann
+CS 536 - Fall 2015
+HW3
+
+LTR     // any letter
+EPS     // epsilon
+OR      // |
+STAR    // *
+PLUS    // +
+LPAR    // (
+RPAR    // )
+
+EDITED 10/22
+Q1. unambiguous CFG - assuming '.' means catenation
+
+    regex --> regex OR exp | exp
+
+    exp --> exp.term | term
+
+    term --> term PLUS | term STAR | EPS | LTR | LPAR regex RPAR
+
+Q2. // Hand Drawn //
+

@@ -1,0 +1,45 @@
+struct Point{
+    int x;
+    int y;
+};
+
+int f(int x, bool b) {
+}
+
+bool ff(int x) {
+}
+
+void fff(bool c) {
+}
+
+void g() {
+    int a;
+    int c;
+    bool b;
+    struct Point p;
+    p(Point).x(int) = a(int);
+    b(bool) = (a(int) == 3);
+    f(int,bool->int)((a(int) + (p(Point).y(int) * 3)), b(bool));
+    g(->void)();
+    while ((b(bool) == true)) {
+        if ((p(Point).x(int) > p(Point).y(int))) {
+            a(int)++;
+            c(int)--;
+        }
+        else {
+            b(bool) = false;
+        }
+    }
+    while ((!false)) {
+        if ((f(int,bool->int)(p(Point).x(int), true) <= 10)) {
+            b(bool) = false;
+            cout << a(int);
+            cout << b(bool);
+        }
+    }
+    c(int) = f(int,bool->int)(p(Point).y(int), false);
+    cin >> a(int);
+    cin >> b(bool);
+    fff(bool->void)((p(Point).x(int) != a(int)));
+}
+

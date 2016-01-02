@@ -1,0 +1,219 @@
+<HTML>
+<HEAD>
+  <TITLE>Sample Exam Answers</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Sample Exam Answers</H1>
+
+
+<H2>Question 2.</H2>
+<P>
+<H3>Part (a).</H3>
+I would add a new, Boolean field to the symbol-table entry for a function
+name called <b>isForward</b>.
+The value would be true if the only declaration seen so far was a
+forward declaration, and false if a normal declaration for the
+function had been seen.
+
+<P>
+<H3>Part (b).</H3>
+The name-analysis method for a forward declaration would work as follows:
+<OL>
+  <LI> Do a local lookup of the name.  (Or a global lookup; they are the same
+       in this case, since function declarations only occur at the outermost level.)
+  <LI> If the lookup returns null, create a new Sym object for a function
+       containing the return type and the list of parameter types,
+       and with the new isForward field set to true.  Add the function
+       name and the new Sym to the symbol table.
+  <LI> If the lookup does not return null (i.e., returns a Sym), then
+       if that Sym is for a variable (not a function) then give error #1.
+       If that Sym is for a function, then give error #2.
+</OL>
+
+The name-analysis method for a normal function declaration would work as
+follows:
+<OL>
+  <LI> Do a local (or global) lookup of the name.
+  <LI> If the lookup returns null, create a new Sym object for a function
+       containing the return type and the list of parameter types,
+       and with the new isForward field set to false.  Add the
+       function name and the new Sym to the symbol table.
+  <LI> If the lookup does not return null (i.e., returns a Sym), then
+       if that Sym is for a variable (not a function) then give error #1.
+       Otherwise (that Sym is for a function)
+       if that Sym's isForward field is false, give error #3.
+  <LI> If the lookup returns a Sym with isForward == true,
+       then if the return type and/or parameter list
+       of this function don't match those in the Sym, give error #5;
+       otherwise, set the isForward field to false.
+</OL>
+
+Error message #4 would be handled as follows.
+When name analysis has finished with the whole program,
+it would look in its (single) remaining hashtable to see
+if there is any symbol-table entry for a function with
+the isForward field == true.
+For each such function it would give error message #4.
+
+If we wanted to include the line and character numbers
+of the bad forward function declaration(s) in those
+error message, we would include two more new fields
+in a function's symbol-table entry to hold those
+line and character numbers.
+They would be set when name-analysis processed a forward
+function declaration.
+
+We could also keep a separate list of the Syms for forward declarations,
+adding them to the list (in addition to adding them to the symbol table)
+when a non-erroneous forward declaration is
+processed, and removing them fron the list when the corresponding normal
+declaration is processed.
+In this case, once name analysis is finished with the whole program,
+we would give error message #4 for each forward declaration that
+remains in this separate list.
+    
+<H2>Question 3.</H2>
+<P>
+<H3>Part (a).</H3>
+Task 1 could be done by the <i>called</i> function: NO
+<P>
+Task 2 could be done by the <i>called</i> function: NO
+<P>
+Task 3 could be done by the <i>calling</i> function: YES
+<P>
+Task 4 could be done by the <i>calling</i> function: YES
+<P>
+Task 5 could be done by the <i>calling</i> function: YES
+<P>
+Task 6 could be done by the <i>calling</i> function: YES
+<P>
+Task 7 could be done by the <i>calling</i> function: YES
+
+<H3>Part (b).</H3>
+<P>
+There is no difference in execution time.
+<P>
+In terms of the size of the generated code:
+If a function is never called, then it is better to have as
+many tasks as possible done by the <i>called</i> function
+(or, even better, to avoid generating code for that function
+at all).
+If a function is called exactly once, then it doesn't
+matter whether the tasks are done by the calling or called
+function.
+<P>
+However, for a function that is called more than once,
+the size of the generated code is smaller if as many tasks
+as possible are done by the <i>called</i> function.
+This is because there will be just one copy of the code
+for those tasks.
+If the tasks are done by the calling function, then there
+will be one copy of the code for each call.
+<H2>Question 4.</H2>
+<P>
+The important idea for this question is that the codeGen method
+for the break statement needs to have access to the "false" label
+of its closest enclosing while loop.
+This can be done by passing that label as a parameter (to all statement's
+codeGen methods), or by keeping that label in a new, static field.
+In the latter case, the label has to be saved and restored by the
+whole loop's codeGen method so that correct code is generated for
+a break statement that comes after a nested while loop.
+<P>
+We can also keep a stack of labels, but that is not necessary and
+is a bit less efficient than keeping a single static field.
+<P>
+Here is the code that uses a new, static String field, with
+the new code in bold italic font:
+<UL><pre>
+<b><i>    // new field of the ASTnode class
+    protected static String breakLabel;</i></b>
+
+    // codeGen for WhileStmtNode
+    public void codeGen() {
+        String loopLabel = Codegen.nextLabel();
+        String falseLabel = Codegen.nextLabel();
+        <b><i>String saveLabel = breakLabel;</i></b>
+        
+        <b><i>breakLabel = falseLabel;</i></b>
+        Codegen.genLabel(loopLabel);
+        myExp.codeGen();
+        Codegen.genPop(Codegen.T0, 4);
+        Codegen.generate("beq", Codegen.T0, Codegen.FALSE, falseLabel);
+        myStmtList.codeGen();
+        Codegen.generate("b", loopLabel);
+        Codegen.genLabel(falseLabel);
+    }
+
+
+    // codeGen for BreakStmtNode
+    public void codeGen( ) {
+        <b><i>Codegen.generate("b", breakLabel);</i></b>
+    }
+</pre></UL>
+
+
+<H2>Question 5.</H2>
+<P>
+<table rules=groups>
+<colgroup>
+  <col width="130">
+</colgroup>
+<colgroup>
+  <col width="130">
+</colgroup>
+<colgroup>
+  <col width="130">
+</colgroup>
+<colgroup>
+  <col width="60">
+  <col width="60">
+  <col width="60">
+  <col width="60">
+  <col width="60">
+  <col width="60">
+</colgroup>
+
+<thead>
+<tr><td><b>x</b>
+    <td><b>a</b>
+    <td><b>b</b>
+    <td colspan=5, align=center><b>output</b>
+    <td>
+    <td>
+    <td>
+<tbody>
+<tr><td><i>value</b>
+    <td><i>value</b>
+    <td><i>value</b>
+    <td>a: 10
+    <td>k: 10
+    <td>x: 7
+    <td>k: 6
+    <td>k: 6
+<tr><td><i>reference</b>
+    <td><i>value</b>
+    <td><i>reference</b>
+    <td>a: 8
+    <td>k: 8
+    <td>x: 4
+    <td>k: 4
+    <td>k: 4
+<tr><td><i>value-result</b>
+    <td><i>value</b>
+    <td><i>value</b>
+    <td>a: 10
+    <td>k: 10
+    <td>x: 7
+    <td>k: 6
+    <td>k: 7
+<tr><td><i>value</b>
+    <td><i>name</b>
+    <td><i>value</b>
+    <td>a: 10
+    <td>k: 11
+    <td>x: 7
+    <td>k: 7
+    <td>k: 7
+</table>

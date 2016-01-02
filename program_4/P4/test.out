@@ -1,0 +1,30 @@
+struct Point{
+    int x(int);
+    int y(int);
+};
+
+int f(int,bool->int)(int x(int), bool b(bool)) {
+    return 10;
+}
+
+void g(->void)() {
+    int a(int);
+    bool b(bool);
+    bool c(bool);
+    struct Point p(Point);
+    (p(Point)).x(int) = a(int);
+    b(bool) = (a(int) == 4);
+    f(int,bool->int)((a(int) + ((p(Point)).y(int) * 2)), b(bool));
+    g(->void)();
+    if (b(bool)) {
+        a(int) = ((p(Point)).x(int) + a(int));
+    }
+    else {
+        a(int) = ((p(Point)).y(int) + a(int));
+    }
+    while (c(bool)) {
+        int i(int);
+        i(int) = (a(int) + i(int));
+    }
+}
+

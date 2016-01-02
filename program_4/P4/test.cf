@@ -1,0 +1,30 @@
+struct Point {
+	int x;
+	int y;
+};
+
+int f(int x, bool b) { 
+	return 10;
+}
+
+void g() {
+	int a;
+	bool b;
+	bool c;
+	struct Point p;
+	p.x = a;
+	b = a == 4;
+	f(a + p.y*2, b);
+	g();
+
+	if(b){
+		a = p.x + a;
+    } else {
+		a = p.y + a;
+    }
+
+    while(c){
+    	int i;
+		i = a + i;
+	}
+}

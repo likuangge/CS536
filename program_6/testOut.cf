@@ -1,0 +1,31 @@
+void foo(int x) {
+    int y;
+    bool z;
+    y(int) = (x(int) * 3);
+    if ((y(int) > 10)) {
+        z(bool) = true;
+    }
+    while ((z(bool) && (y(int) < 10))) {
+        y(int)++;
+    }
+}
+
+void main() {
+    int a;
+    int b;
+    bool c;
+    cout << "Hello world!";
+    cout << "\n";
+    b(int) = (a(int) + a(int));
+    b(int)++;
+    a(int)--;
+    a(int) = (a(int) / b(int));
+    if (true) {
+        c(bool) = false;
+    }
+    else {
+        c(bool) = true;
+    }
+    foo(int->void)(a(int));
+}
+

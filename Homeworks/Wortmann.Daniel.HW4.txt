@@ -1,0 +1,53 @@
+Dan Wortmann
+CS 536 - Fall 2015
+HW4
+--------------------------------------------------------------------------------
+Q1.
+
+CFG Productions:                Translation Rules
+----------------                -----------------
+program →
+MAIN LPAREN RPAREN LCURLY list RCURLY   
+                                { program = main(){list.trans} }            S0
+
+list →  list oneItem                    
+                                { list1.trans = list2.trans oneItem.trans } S1
+        | epsilon                       
+                                { list1.trans = [] }                        S2
+
+oneItem → decl                          
+                                { oneItem.trans = decl.trans }              S3
+        | stmt                          
+                                { oneItem.trans = stmt.trans }              S4
+
+decl →  BOOL ID SEMICOLON               
+                                { decl.trans = BOOL.value ID.value; }       S5
+        | INT ID SEMICOLON              
+                                { decl.trans = INT.value ID.value; }        S6
+
+stmt →  ID ASSIGN exp SEMICOLON         
+                                { stmt.trans = ID.value = exp.trans; }      S7
+        | IF LPAREN exp RPAREN stmt     
+                                { stmt1.trans = if(exp.trans) stmt2.trans } S8
+        | LCURLY list RCURLY            
+                                { strm.trans = {list.trans} }               S9
+
+exp →   exp PLUS exp                    
+                                { exp1.trans = exp2.trans + exp3.trans }    S10
+        | exp LESS exp                  
+                                { exp1.trans = exp2.trans < exp3.trans }    S11
+        | exp EQUALS exp                
+                                { exp1.trans = exp2.trans == exp3.trans }   S12
+        | ID                            
+                                { exp.trans = ID.value }                    S13
+        | BOOLLITERAL                   
+                                { exp.trans = BOOLLITERAL.value }           S14
+        | INTLITERAL                    
+                                { exp.trans = INTLITERAL.value }            S15
+
+Wasn't exactly sure as to what we need to do fro the set notation since I wasn't
+in class during the career fair week...
+I wrote an expression that describes a 'used' variable, as long as it's
+within the following set constraints:
+
+(S0 ∩ S1) ∩ { (S4 ∪ S7 ∪ S8  ∪ S9) ∩ (S10 ∪ S11 ∪ S12) }

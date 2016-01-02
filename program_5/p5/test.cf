@@ -1,0 +1,43 @@
+struct Point {
+	int x;
+	int y;
+};
+
+int f(int x, bool b) {}
+bool ff(int x) {}
+void fff(bool c) {}
+
+void g() {
+	int a;
+	int c;
+	bool b;
+	struct Point p;
+	p.x = a;
+	b = a == 3;
+	f(a + p.y * 3, b);
+	g();
+	while(b == true)
+	{
+		if(p.x > p.y){
+			a++;
+			c--;
+		}
+		else {
+			b = false;
+		}
+	}
+
+	while(!false){
+		if(f(p.x,true) <= 10){
+			b = false;
+			cout << a;
+			cout << b;
+		}
+	}
+
+	c = f(p.y, false);
+	cin >> a;
+	cin >> b;
+
+	fff(p.x != a);
+}

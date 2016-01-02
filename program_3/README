@@ -1,0 +1,19 @@
+Dan Wortmann
+CS 536 - Fall 2015
+P3 - Parser
+
+ONE LATE DAY USED
+
+This is the implementation of the parser for the YES language. This follows
+the conventions of the language as defined by the CFlat.grammar to read in
+a source file and parse it correctly with spacing, associativity, and
+parantheses around each ExpNode.
+
+Nothing fancy was done otherwise. One by one, the rules were implemented
+and cascaded to implement simple rules. This controlled the development
+complexity and minimized bugs.
+
+To run testing simply 'make' the directory and the run:
+'java P3 test.cf output.cf'
+
+The output, should generate a pretty printed source.

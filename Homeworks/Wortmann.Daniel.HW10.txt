@@ -1,0 +1,110 @@
+Dan Wortmann
+CS536 - Fall 2015
+HW10
+--------------------------------------------------------------------------------
+Q1.
+
+    a)
+
+    (a - b) + (c - d)
+
+        +
+      /   \
+     -     -
+    / \   / \
+   a   b c   d
+
+    load T0 <= a
+    load T1 <= b
+    T0 = T0 - T1 // We can't override T0 until after we evaluate c - d
+    load T1 <= c
+    load T2 <= d // NEED a 3rd register (or store intermediate on stack)
+    T1 = T1 - T2
+
+    T0 = T0 + T1 //final result
+    
+    b)
+    
+    (a / b) + (c / d)
+
+    Each division operation by default requires 2 registers because we
+    need to store the result in double the width. Assuming that each double
+    register counts as ONE register we could do this:
+
+        +
+      /   \
+    '/'   '/'
+    / \   / \
+   a   b c   d
+
+   load T0 <= a
+   load T1 <= b
+   F0 = T0 / T1
+   load T1 <= c
+   load T2 <= d
+   load T0 <= F0 Low (quotient)
+   F0 = T1 / T2
+   load T1 <= F0 Low (quotient)
+
+   T0 = T0 + T1
+
+   Here we used F0/F1, T0, T1, T2
+
+   Assuming that each double register counts as TWO registers I would do:
+
+   (a / b) + (c + d)
+
+        +
+      /   \
+    '/'    +
+    / \   / \
+   a   b c   d
+
+   load T0 <= a
+   load T1 <= b
+   F0 = T0 / T1
+   load T0 <= c
+   load T1 <= d
+   T0 = T1 + T0
+   load T1 <= F0 Low (quotient)
+
+   T0 = T0 + T1
+
+   Here we used F0/F1, T0, T1
+
+--------------------------------------------------------------------------------
+Q2.
+
+    private static usedDoubleReg = false;
+
+    int numRegisters(ASTNode node) {
+        int n = 0; // keep track of # of registers needed
+
+        // Return 1 if we reached a leaf //
+        if(node.isLeaf())
+            return 1;
+
+        // Check for double word operations //
+        if(node.doubleOp() && !usedDoubleReg)
+            n += 2; // assume we need at least one double register on top of T0/T1
+            usedDoubleReg = true;
+
+        n += numRegisters(node.leftChild);
+        n += numRegisters(node.rightChild);
+        
+        // we would probably need to have some kind of global/static variable
+        // to keep track of if we already used a double register so we do not
+        // add the 2 twice. As in the above examples, we can reuse F0/F1 as long
+        // as we save off the contents to a normal register  (only division)
+        
+        // I'm not sure how in depth we want to be with this, since double
+        // operations should max out at 6 registers (F0,F2,F4) given something
+        // like ((double)a*(double)b) * ((double)c*(double)d) and at most we
+        // would need like 2 to 3 temp registers for any non-double ops.
+        
+        return n;
+}
+
+
+
+

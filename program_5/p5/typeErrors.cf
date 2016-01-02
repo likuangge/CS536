@@ -1,0 +1,172 @@
+bool bbb;
+struct S { int a; };
+struct S t;
+
+void f(int p1, bool p2) {
+}
+
+void main() {
+    int aaa;
+
+    // some errors involving illegal operations on functions
+    aaa = f + f;
+    bbb = f == 3;
+    bbb = f > main;
+    bbb = f == f;
+
+    // some errors involving bad function calls 
+    aaa();
+    f();
+    f(5);
+    f(aaa, aaa);
+    f(t, t.a);
+    S();
+
+    // some errors involving structs 
+    t = 5;
+    t = t;
+    cin >> S;
+    t = true || 3;
+    bbb = S && t.a;
+
+    // error involving return
+    return 10;
+
+    // other type errors 
+    aaa = aaa + (!false);
+    aaa = aaa + "foo";
+    bbb = aaa;
+
+    // don't give too many or too few error messages here 
+    bbb = (aaa + true) && (bbb < true);
+}
+
+// Passed all of the given cases as given by the spec //
+// ADDING my own cases //
+
+// globals //
+int a;
+int b;
+int c;
+bool d;
+bool e;
+void ff;
+
+struct H{
+	int j;
+};
+
+struct T{
+	int i;
+	bool q;
+};
+
+// function decls //
+int intFoo(int x, bool y) {}
+bool boolFoo(int x, bool y) {}
+void voidFoo(int x, bool y) {}
+int returnInt() {
+	// Do stuff //
+	int u;
+	u = u + 1;
+}
+
+bool returnBool() {
+	// Do nothing //
+}
+
+int returnInt2() {
+	return true;
+}
+
+void returnVoid(){
+	return a;
+}
+
+// main //
+void main()
+{
+	struct H hh;
+	struct T tt;
+	bool ff;
+	// General Arithmetic Errors //
+	a = a + d; //int:int/bool
+	b = b - f; //int:int/void
+	a = d / e; //int:bool/bool
+	b = f * f; //int:void/void
+	d = a + b; //bool:int/int
+	e = c - f; //bool:int/void
+	f = a / b; //void:int/int
+	f = a * e; //void:int/bool
+	a = hh + tt; //int:struct/struct
+	hh = a - tt; //struct:int/struct
+
+	d--;
+	e++;
+	hh--;
+	tt++;
+
+	// Read/Write //
+	cout << intFoo;
+	cout << H;
+	cout << hh;
+	cout << ff;
+
+	cin >> boolFoo;
+	cin >> H;
+	cin >> hh;
+
+	// Call non-function //
+	a();
+	e();
+	tt();
+
+	// Function args //
+	a = intFoo(ff, c);
+	voidFoo(a, b, c, e, f);
+
+	// Function return errors //
+	returnInt();
+	returnBool();
+	returnInt2();
+	returnVoid();
+
+	// Equality stuff //
+	e = a == b;
+	e = a == e;
+	e = c == ff;
+	e = intFoo == boolFoo;
+	e = intFoo != intFoo;
+	e = voidFoo == boolFoo;
+
+	// if/else/while //
+	if(a)
+	{
+		e = a;
+	}
+	else
+	{
+		// Do nothing //
+	}
+
+	if(voidFoo)
+	{
+		if(intFoo(a,e))
+		{
+			b = a;
+		}
+		
+		while(true == c){
+			
+		}
+	}
+
+	// assignment //
+	a = boolFoo(a,e);
+	e = intFoo(a,e) == voidFoo(a,e);
+	e = voidFoo(a,e) != voidFoo(a,e);
+	e = H == T;
+	e = hh == tt;
+	H = T;
+	hh = tt;
+}

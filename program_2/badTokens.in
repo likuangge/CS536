@@ -1,0 +1,44 @@
+// Dan Wortmann - testing bad strings, I feel like its rough
+# There are just so many possibilites
+"unterminated
+"also unterminated \"
+"backslach followed by space: \ is not allowed"
+"bad escaped char: \a and not terminated
+"another plain unterminated string
+"I suppose it should also fail here #@$%$^#...
+"Of course then there are \z \s \e too"
+"Who can forget the \ and ' or maybe even ?"
+"What else should be tested \z in this case?
+"I feel like its very difficult to find errors like these''''
+// Comments are ignored of course
+# Even with the pound 
+"After a string they are ignored too..." //comment time
+"I wonder if the errors catch it right	// more comment
+"I think it may treat it like part of \a \x\e the string...
+"include a bad ' in a good string"
+"same goes for a bad " in a good string..." but this will fail it now...
+"?
+".
+"_
+"'
+
+// Lets test some good ole numbers //
+1
+12
+15
+24
+38
+42
+53
+126
+489
+999
+12345
+16589
+135489
+1526489
+13247899
+2147483647 // this is the most positive number
+2147483648 # and here's one thats too large...
+-2147483648 // this is the most negative number
+-2147483649 # and too small...

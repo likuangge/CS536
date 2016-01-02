@@ -1,0 +1,34 @@
+struct One {
+	int x;
+	int y;
+};
+
+struct Two {
+	int y;
+	int z;
+};
+
+void one(int x, bool b) {}
+int one(int x, bool b) {}
+bool one(int x, bool b) {}
+
+struct one {
+	bool q;
+};
+
+void g() {
+	int a;
+	void u;
+	bool check;
+	struct One o;
+	struct Two t;
+
+	a = a + b;
+
+	if(check && done)
+	{
+		int d;
+		a = o.x + t.w;
+		d = o.z + t.z;
+	}
+}

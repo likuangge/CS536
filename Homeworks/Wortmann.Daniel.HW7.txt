@@ -1,0 +1,98 @@
+Dan Wortmann
+CS536 - Fall 2015
+HW7
+
+--------------------------------------------------------------------------------
+Q1.
+    decl → typedef
+    typedef → TYPEDEF type ID SEMICOLON
+
+    Since we're adding an additional 'type' we must check all rules that involve
+    declaring or returning a type - perhaps add further rules.
+
+    ntype → SYNONYM // similar to INT/BOOL/VOID but its dynamic? Need a terminal
+                    // to describe new types somehow... its just like id -> ID
+
+    varDecl → TYPEDEF STRUCT id ntype SEMICOLON
+            | TYPEDEF ntype id SEMICOLON
+
+    formalDecl → ntype id
+
+    fnDecl → ntype id formals fnBody
+
+--------------------------------------------------------------------------------
+Q2.
+    a) Given a Type helper class, we should also store the type as a string
+       perhaps or a custom type of some sorts, such that we can lookup the
+       type in the symbol table.
+
+       So in Type.java:
+            class TypedefType extends Type {
+                private String type;
+                private Type core; //int/bool/char etc.
+
+                public TypedefType(String type, Type core) {
+                    this.type = type;
+                    this.core = core;
+                }
+
+                public boolean isTypedefType() {
+                    return true;
+                }
+
+                public String getTypeName() {
+                    return type;
+                }
+                
+                public Type getCoreType() {
+                    return core;
+                }
+
+                public boolean equals(Type t) {
+                    return t.isTypedefType() && t.getTypeName().equals(type);
+                }
+            }
+
+       Additionally I would have a similar approach to storing the type as we
+       did with structs, such that we can lookup declarations more easily both
+       locally and globally.
+
+    b) Keeping the declared types in a separate list/table will allow us to
+       check for additional cases. First we check if type T is of an already
+       built in type such as int or bool. If it does not, we must search for
+       already declared typedefs and search for the T type. If one exists the
+       name analyzer can pass without error. This is in the case:
+       
+       typedef int money;
+       typedef money dollars;
+
+    c) Since we already have a list of all declared types, we should be easily
+       able to check whether a declaration is valid. If the type exists the
+       name analyzer passes. Nothing fancy here.
+
+    d) Finally when processing variables within statments we must check for
+       matching types/core types. For example if money is of type int, and
+       dollars is of type money, we both that both types are rooted at 'int'.
+       This analysis can be done by calling the getCoreType() which would store
+       'int' in this case as IntType object.
+       
+       This is of course on top of doing the typical variable testing such as
+       looking up for declared id's and whether they are in the correct scope.
+       
+       In the example:
+       
+       We would have an entry in the typedef table for:
+        TypedefType - type="date"        - core=structType of (MonthDayYear)
+        TypedefType - type="dollars"     - core=IntType(int)
+        TypedefType - type="moreDollars" - core=IntType(int)
+        
+       And then we would have symbols for:
+        today   - type date         - core MonthDayYear
+        salary  - type dollars      - core int
+        md      - type moreDollars  - core int
+        d       - type int
+        
+       I dont think we need to save any information regarding the fact that
+       moreDollars comes from dollars. After processing it as a successful
+       declaration all we care about is the core type so we know for type
+       analysis whether we can process the variables together.

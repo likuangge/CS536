@@ -1,0 +1,99 @@
+Dan Wortmann
+CS536 Fall 2015
+HW2
+
+Q1.
+
+    a) {SLASH}{STAR}[^(*/)]*{STAR}{SLASH}
+
+    The character class delimits many characters within itself. In this case
+    the middle of the expression '[^(*/)]' makes it such that we ignore all of
+    the characters within the character class. This does mean however that we
+    can accept some comments which do not contain such characters. Overall the
+    implementation is incorrect.
+    
+    DOES NOT ACCEPT:
+
+    /*
+     * This comment would be great (just kidding)
+     */
+
+    b) {SLASH}{STAR}(.)*{STAR}{SLASH}
+
+    The '.' literally matches every character available, so again the middle of
+    the regex will break our specification since '(.)*' can match any number of
+    */ end characters before the comment is actually over. We also can not have
+    any newlines because of the '.' not being able to match it.
+    
+    ACCEPTS INCORRECTLY:
+
+    /*this is such garbage*/*/*/*/more characters...*/
+
+    DOES NOT ACCEPT:
+
+    /*
+     *
+     */
+
+    c) {SLASH}{STAR}([^*]*{STAR}+[^*/])*{STAR}+{SLASH}
+
+    This regex is interesting in the fact that it both ignores and accepts the
+    '*' character within the middle expression. Also when we use [^*/] it does
+    not guarantee that we catch '*/' since the character class matches one OR
+    the other, not necessarily both in a row. We do want to accept stand alone
+    '/' or '*' characters so this would not allow for such comments. We can also
+    accept a long string of '*' prior to the final closing '/'.
+
+    I'm not even sure how to give an example string due to the middle accepting,
+    and ignoring the '*'.
+
+    d) {SLASH}{STAR}([^*]|[^/])+{STAR}{SLASH}
+
+    This will exclude any one or more of a '*' OR '/' but again not necessarily
+    both in the pattern that may end a comment. So essentially we can not have
+    any of those characters within our comment... If a comment does not contain
+    such characters it will be accepted correctly.
+
+    WILL NOT ACCEPT:
+
+    /*
+     * ***ERROR*** This function is used to catch errors which will end in ///
+     */
+
+    e) {SLASH}{STAR}[^*]*{STAR}+{SLASH}+
+
+    We may ignore any number of '*' characters in the body of the comment.
+    Furthermore, the end of the comment may end in many stars followed by many
+    slashes such as '********/////////////' since this accepts one or more of
+    each character.
+    
+    WILL ACCEPT:
+    
+    /*****************//////////////////////
+    
+    WILL NOT ACCEPT:
+    
+    /* This is a comment involving the * and there is things i need to explain
+     * using the * itself, but it wont be accepted by this regex */
+Q2.
+
+    SLASH   =   [/]
+    STAR    =   [*]
+    nSLASH  =   [^/]
+    nSTAR   =   [^*]
+    START   =   {SLASH}{STAR}+
+    BODY    =   ([nSTAR][nSLASH])*
+    END     =   {STAR}+{SLASH}
+
+    {START}{BODY}{END}
+    
+    This allows us to have any number of leading and trailing stars after the
+    beginning and ending of the comment '/' characters such as:
+    
+    /**************************
+     *
+     *************************/
+    
+    Additionally the middle expression within () makes sure the only characters
+    NOT accepted within the body of the comment are '*/' in that format. This
+    will allow for each to exist stand alone, or out of order just as '/*'.

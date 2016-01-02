@@ -1,0 +1,94 @@
+Dan Wortmann
+CS 536 - Fall 2015
+HW6
+--------------------------------------------------------------------------------
+Q1.
+    a)
+        i)
+            NAME IDNUM EOF
+
+            file        ->  record tail
+            record      ->  NAME IDNUM optGrades
+            tail        ->  ε
+            optGrades   ->  ε
+
+        ii)
+                        file
+                       /     \
+                      /       \
+                   record     tail
+                  /  / \         \
+                 /  /   \         ε
+              NAME ID  optGrades
+                           |
+                           ε
+
+    b)
+        i)
+            NAME IDNUM INTLIT STAR
+            
+            file        ->  record tail
+            record      ->  NAME IDNUM optGrades
+            tail        ->  ε
+            optGrades   ->  grades
+            grades      ->  oneGrade | oneGrade COMMA grades   // Left Factoring
+            oneGrade    ->  INTLIT optLate
+            optLate     ->  stars
+            stars       ->  STAR
+
+            Since STAR follows the INTLIT the parser would not know which rule
+            to pick in the CFG rule for 'grades'. How can we predict there are
+            more grades with just one token?
+
+        ii)
+                        file
+                       /     \
+                      /       \
+                   record     tail
+                  /  / \         \
+                 /  /   \         ε
+              NAME ID  optGrades
+                           |
+                        grades
+                           |
+                      ***ERROR*** STAR token breaks prediction
+
+        iii)
+            grades      ->  oneGrade | oneGrade COMMA grades   // Left Factoring
+
+--------------------------------------------------------------------------------
+Q2.
+
+    FIRST(aa) = {A}         FOLLOW(aa) = {EOF}
+    FIRST(bb) = {D,F,ε}     FOLLOW(bb) = {B}
+    FIRST(cc) = {D,F}       FOLLOW(cc) = {D,F}
+    FIRST(dd) = {E,ε}       FOLLOW(dd) = {B,D,F}
+    FIRST(ee) = {G,J,ε}     FOLLOW(ee) = {B,D,F}
+    FIRST(ff) = {G,J}       FOLLOW(ff) = {B,D,F,G,J}
+    FIRST(gg) = {C,H}       FOLLOW(gg) = {B,D,F,G,J}
+    FIRST(hh) = {G,J}       FOLLOW(hh) = {D}
+
+    FIRST(A ee bb B)    = {A}
+
+    FIRST(cc bb)        = {D,F}
+    FIRST(ε)            = {B}
+
+    FIRST(D C)          = {D}
+    FIRST(F ee bb B dd) = {F}
+
+    FIRST(E A ee bb B)  = {E}
+    FIRST(ε)            = {B,D,F}
+
+    FIRST(ff ee)        = {G,J}
+    FIRST(ε)            = {B,D,F}
+
+    FIRST(hh D gg)      = {G,J}
+    
+    FIRST(C)            = {C}
+    FIRST(H C)          = {H}
+
+    FIRST(G)            = {G}
+    FIRST(J)            = {J}
+
+    Not sure if FIRST(ε) is really a production with a FIRST set? I assumed we
+    take on the FOLLOW sets of the LHS.

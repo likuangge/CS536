@@ -1,0 +1,202 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<style>
+<!--
+body { font-family: Helvetica, Arial, sans-serif; background-color: white; text-color: black; font-size: 10pt }
+h1 h2 h3 { font-family: Arial }
+h1 { font-size: 140%; font-family: sans-serif; color: black}
+h2 { font-size: 130%; color: rgb(0%, 0%, 50%) }
+h3 { font-size: 110%; font-style:italic; color: rgb(0%, 0%, 75%) }
+h4 { font-size: 120%; color: purple }
+em { font-weight: bold }
+.button   { font-family: Arial; font-style: bold; color: blue }
+.note     { font-style: italic; color: green }
+.subtitle { font-family: sans-serif; text-align: center; font-size: 120% }
+.attop    { vertical-align: top; text-align: justify }
+.prompt   { font-weight: bold; color: blue }
+.response { font-weight: bold; color: black }
+table   { font-size: 10pt }
+-->
+</style>
+<title>CS 536 Spring 2013 Midterm Exam Solution</title>
+</head>
+
+<body>
+<center>
+<h1>Midterm Exam Solution</h1>
+<b>CS 536, Spring 2013</b> 
+</center>
+<hr width=100%>
+
+
+<h2>Question 1 (12 points)</h2>
+
+<h3>Part (a) (6 points)</h3>
+<p>There are many possible ways to do this; here are two:</p>
+<IMG src="q1a_soln.png">
+
+<h3>Part (b) (6 points)</h3>
+<p>There are many possible ways to do this; here are two:</p>
+<ul>
+<li><p>cons* vowel (cons+ vowel)* cons*</p></li>
+<li><p>cons* vowel (cons vowel | cons+)*</p></li>
+</ul>
+
+<h2>Question 2 (10 points)</h2>
+<dir><pre>
+stmt ::= FOR LPAREN forCond RPAREN LCURLY varDeclList stmtList RCURLY<br>
+forCond ::= ID ASSIGN exp COLON exp optFor<br>
+optFor ::= COLON exp
+        |  /* epsilon */
+</pre></dir>
+
+<h2>Question 3 (27 points)</h2>
+<h3>Part (a) (15 points)</h3>
+<dir><pre>exp &rarr; exp ? term  |  term
+     
+term &rarr; factor $ term  |  factor
+
+factor &rarr; INTLIT  |  ( exp )
+</pre></dir>
+
+<h3>Part (b) (4 points)</h3>
+<dir><pre>
+        expr
+       /  |  \
+     /    |    \
+ expr     ?    term
+  |           /  |  \
+ term    factor  $  term
+  |        |         |
+factor   INTLIT    factor
+  |       (2)     /  |   \
+INTLIT           (  expr  )
+ (1)               / |  \
+                expr ?  term
+                 |       |
+                term   factor
+                 |       |
+               factor  INTLIT
+                 |      (4)
+               INTLIT
+                (3)
+</pre></dir>
+
+<h3>Part (c) (4 points)</h3>
+<dir><pre>exp &rarr; term exp'
+
+exp' &rarr; ? term exp'  |  &epsilon;
+     
+term &rarr; factor $ term  |  factor
+
+factor &rarr; INTLIT  |  ( exp )
+</pre></dir>
+
+<h3>Part (d) (4 points)</h3>
+<dir><pre>exp &rarr; term exp'
+
+exp' &rarr; ? term exp'  |  &epsilon;
+
+term &rarr; factor term'
+
+term' &rarr; $ term  |  &epsilon;
+
+factor &rarr; INTLIT  |  ( exp )
+</pre></dir>
+
+<h2>Question 4 (15 points)</h2>
+<dir>
+<table cellpadding="4" border="1" style="border-collapse: collapse" bordercolor="#111111" cellspacing="0">
+<tr><th>Grammar rule</th><th>Translation rule</th></tr>
+<tr><td>program &rarr; varDeclList stmtList</td><td><tt>program.trans = stmtList.trans</tt></td></tr>
+<tr><td>varDeclList &rarr; varDeclList varDecl</td><td>&nbsp;</td></tr>
+<tr><td>varDeclList &rarr; varDecl</td><td>&nbsp;</td></tr>
+<tr><td>varDecl &rarr; type ID ;</td><td>&nbsp;</td></tr>
+<tr><td>type &rarr; INT</td><td>&nbsp;</td></tr>
+<tr><td>type &rarr; BOOL</td><td>&nbsp;</td></tr>
+<tr><td>stmtList &rarr; stmtList stmt</td><td><tt>stmtList<sub>1</sub>.trans =<br> 
+  &nbsp;&nbsp;&nbsp; union(stmtList<sub>2</sub>.trans, stmt.trans)</tt></td></tr>
+<tr><td>stmtList &rarr; stmt</td><td><tt>stmtList.trans = stmt.trans</tt></td></tr>
+<tr><td>stmt &rarr; ID = exp ;</td><td><tt>stmt.trans = exp.trans</tt></td></tr>
+<tr><td>stmt &rarr; IF ( exp ) { varDeclList stmtList }</td><td><tt>stmt.trans =<br> 
+  &nbsp;&nbsp;&nbsp; union(exp.trans, stmtList.trans)</tt></td></tr>
+<tr><td>exp &rarr; ID</td><td><tt>exp.trans = new List(ID.val)</tt></td></tr>
+<tr><td>exp &rarr; INTLIT</td><td><tt>exp.trans = new List()</tt></td></tr>
+<tr><td>exp &rarr; exp + exp</td><td><tt>exp<sub>1</sub>.trans =<br>
+ &nbsp;&nbsp;&nbsp; union(exp<sub>2</sub>.trans, exp<sub>3</sub>.trans)</tt></td></tr>
+<tr><td>exp &rarr; exp * exp</td><td><tt>exp<sub>1</sub>.trans =<br> &nbsp;&nbsp;&nbsp; union(exp<sub>2</sub>.trans, exp<sub>3</sub>.trans)</tt></td></tr>
+<tr><td>exp &rarr; exp == exp</td><td><tt>exp<sub>1</sub>.trans =<br> &nbsp;&nbsp;&nbsp; union(exp<sub>2</sub>.trans, exp<sub>3</sub>.trans)</tt></td></tr></table>
+</dir>
+<h2>Question 5 (36 points)</h2>
+
+<h3>Part (a) (24 points)</h3>
+<dir><table cellpadding="4" border="1" style="border-collapse: collapse" bordercolor="#111111" cellspacing="0">
+<tr><th>Non-terminal <i>X</i></th><th>FIRST(<i>X</i>)</th><th>FOLLOW(<i>X</i>)</th></tr>
+<tr><td>block</td>
+<td>LCURLY</td>
+<td>EOF, ELSE, ID, IF, RETURN, RCURLY</td></tr>
+<tr>
+  <td>declList</td>
+  <td>TYPE, &epsilon;</td>
+  <td>ID, IF, RETURN, RCURLY</td></tr>
+<tr>
+  <td>stmtList</td>
+  <td>ID, IF, RETURN, &epsilon;</td>
+  <td>RCURLY</td></tr>
+<tr><td>decl</td>
+<td>TYPE</td>
+<td>TYPE, ID, IF, RETURN, RCURLY</td></tr>
+<tr><td>stmt</td>
+<td>ID, IF, RETURN</td>
+<td>ID, IF, RETURN, RCURLY</td></tr>
+<tr><td>exp</td>
+<td>ID, INT</td>
+<td>SEMI, RPAREN</td></tr>
+</table></dir>
+
+<h3>Part (b) (12 points)</h3>
+<p><b>Snapshot 1:</b></p>
+<dir><table>
+<tr><td><i>current stack</i></td></tr>
+<tr><td><pre>
+
+stmtList
+ RCURLY
+  EOF</pre></td></tr>
+</table></dir>
+<p><b>Snapshot 2:</b></p>
+<dir>
+<p><i>partial parse tree</i></p>
+<pre>
+               block
+            __/ || \__
+      _____/ __/  \__ \_____
+     /      /        \      \
+LCURLY  declList  stmtList  RCURLY
+          /   \
+         /     \
+       decl  declList
+      /  | \
+     /   |  \
+   TYPE ID  SEMI
+</pre>
+</dir>
+
+<p><b>Snapshot 3:</b></p>
+<dir>
+<p><i>input:</i> <tt>LCURLY RCURLY</tt></p>
+<table>
+<tr><td><i>current stack</i></td></tr>
+<tr><td><pre>
+
+stmtList
+ RCURLY
+  EOF</pre></td></tr>
+</table></dir>
+</body>
+
+</html>

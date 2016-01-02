@@ -1,0 +1,22 @@
+Dan Wortmann - dwortman
+CS536 - Fall2015
+P4 - Name Analyzer
+
+2 Late Days used
+
+As you may infer, I was hard pressed on time and didn't have too much time
+to focus on this program. It is mostly functional and has majority of the
+name analysis done with the exception of some unique cases related to the
+struct type. Many of the struct errors are instead caught as "undeclared
+identifier" or "multiply declared identifier". However, the errors are
+caught as needed. Moreover the name analysis structure should be mostly
+in place as needed such that the majority of the program is completed.
+
+The SemSym, P4, and ErrMsg classes have been modified as needed.
+
+For testing, I did some very basic test, such that every node was used at
+least once. Furthermore as you can see, I print out the type more lazily
+than shown in the spec, such that every use of the identifier has the type
+included in the print out statement. I decided that this functionality has
+no impact on the final result, and if anything makes it easier to interpret
+as well as implement - in the world of engineering I'd say a win-win.

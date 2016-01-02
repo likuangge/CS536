@@ -1,0 +1,29 @@
+void foo(int x){
+	int y;
+	bool z;
+	y = x * 3;
+	if(y > 10){
+		z = true;
+	}
+
+	while(z && y < 10)
+	{ y++; }
+}
+
+void main(){
+int a;
+int b;
+bool c;
+cout<<"Hello world!";
+cout<<"\n";
+b = a + a;
+b++;
+a--;
+a = a / b;
+if(true)
+{
+c=false;
+}else{ c = true; }
+
+foo(a);
+}
